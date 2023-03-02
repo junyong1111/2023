@@ -1,7 +1,3 @@
-# SQL
-
-해당 정리는 김지훈님의 ‘칼퇴족 김대리는 알고 나만 모르는 SQL’  책을 참고하였습니다.
-
 ## 1. Database의 정의
 
 - **여러 사람에게 공유되어 사용될 목적을 가지고, 구조적인 방식으로 관리되는 데이터의 집합을 이야기 한다.**
@@ -88,6 +84,7 @@
 
 - 데이터베이스의 **보안, 권한, 무결성 등을 관리**하기 위한 언어
 - 대표적인 명령어 : GRANT, REVOKE
+
 ## 2. SQL의 기초
 
 ## SELECT 문
@@ -396,7 +393,39 @@ EXPRESSION 1이 NULL값이 아니면 EXPRESSION 1을 리턴하고, EXPRESSION 1�
 - COALESCE(NULL, ’B’, ‘C’) → ‘B’리턴
 - ZEROIFNULL(열 이름) : 해당 열에 NULL값이 포함되면 숫자 0으로 바꾸는 함수
 - NVL2(열 이름, 표현식1, 표현식2) : 해당 열이 NULL이면 ‘표현식 2’의 값을 나타내고, NULL이 아니면 ‘표현식 1’의 값을 나타냄
-    - **MYSQL에서는 IFNULL 키워드를 사용한다(열이름, “바꾸고자 하느 값”)**
+    - **MYSQL에서는 IFNULL 키워드를 사용한다(열이름, “바꾸고자 하는 값”)**
+
+### **논리연산자**
+
+**논리연산자 AND, OR** 
+
+```sql
+SELECT 열 이름1, 열 이름2 FROM 테이블명 WHERE 조건절1 AND 조건절2;
+```
+
+**논리연산자 IN**
+
+```sql
+SELECT 열 이름 FROM 테이블명 WHERE 비교할 열 이름 IN(조건1, 조건2);
+```
+
+- IN 연산자는 여러 조건들 중 적어도 하나만 만족해도 출력
+    - 여러 개의 OR 연산자를 하나로 묶은 것이라고 생각하면 된다.
+- IN ( ‘A’, ‘B’)
+    - IN 연산자는 OR 연산자보다 처리 속도가 빠르다.
+        - 데이터가 방대할 때 좀 더 빠르게 실행할 수 있다.
+    - IN 연산자 안에 다른 SELECT 문장을 사용할 수 있다.
+
+**논리연산자 NOT IN 연산자**
+
+```sql
+SELECT 열 이름 FROM 테이블명 WHERE 비교할 열 이름 NOT IN(조건1, 조건2);
+```
+
+- 특정 테이블로부터 특정한 조건들 안에 속하지 않는 모든 데이터를 추출하여 나타내는 뜻
+- 만약 ‘A’, ‘B’, ‘C’,가 있다고 할 때 ‘A’ 와 ‘B’만을 출력하는 방법은 2가지가 존재한다.
+    - IN( ‘A’, ‘B’)
+    - NOT IN(’C’)
 
 ### 3) LIKE 키워드
 
@@ -404,6 +433,7 @@ EXPRESSION 1이 NULL값이 아니면 EXPRESSION 1을 리턴하고, EXPRESSION 1�
 - LIKE 키워드는 %와 _를 사용하여 패턴을 지정한다.
     - % : 0개 이상의 임의의 문자열을 의미한다.
     - _ : 한 개의 임의의 문자를 의미한다.
+- NOT LIKE 키워드를 사용하면 원하지 않는 문자를 제외할 수 있다.
 
 ### LIKE 예시
 
@@ -536,4 +566,32 @@ WHERE condition;
 ```sql
 DELETE FROM employees
 WHERE name = 'John Doe';
+```
+
+## 3. 텍스트 마이닝(Text mining)
+
+**문자 삽입하기**
+
+```sql
+SELECT 열 이름 || '삽입하고 싶은 문자열' || 열 이름 FROM 테이블명;
+```
+
+- 결합연산자 ‘||’ 또는 ‘+’를 사용한다.
+1. CUSTOMERS 테이블을 사용하여 다음처럼 도시(나라)로 표현되도록 필드를 결합하고 ADDR이라는 별칭 주기
+
+| ID | NAME | CITY | COUNTRY | ADDR |
+| --- | --- | --- | --- | --- |
+| 1 | SUE | BERLIN | GERMANY | BERLIN(GERMANY        ) |
+| 2 | DAVID | BERN | SWITZERLAND | BERN(SWITZERLAND    ) |
+| 3 | SAM | NANTES | FRANCE | NANTES(FRANCE          ) |
+| 4 | KIM | RESENDE | BRAZIL | RESENDE(BRAZIL          ) |
+| 5 | LEE | VERSAILLES | FRANCE | VERSAILLES(FRANCE   ) |
+| 6 | BERNEY | BERGAMO | ITALY | BERGAMO(ITALY           ) |
+| 7 | SANDY | BERLIN | GERMANY | BERLIN(GERMANY        ) |
+| 8 | YOUNG | SEOUL | KOREA | SEOUL(KOREA               ) |
+
+```sql
+SELECT ID, NAME, CITY, COUNTRY,
+				CITY||'('||COUNTRY ||')' AS ADDR
+FROM CUSTMERS;
 ```
