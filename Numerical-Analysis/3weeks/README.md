@@ -92,3 +92,78 @@ if __name__ == '__main__':
     print('number of brackets= ', nb)
     print('root interval=', xb)
 ```
+
+### 이분법
+
+| 특징 | 장점 | 단점 | 알고리즘 복잡도 |
+| --- | --- | --- | --- |
+| 주어진 구간을 절반으로 나누어서 근사값을 찾아가는 방식으로 증분법의 변형이다. | - 반복 할때마다 절대 오차가 줄어들기 때문에 계산복잡도가 작다. | -  | - O(logn)의 알고리즘 복잡도를 가진다. |
+1. 하한 경계 (x1)과 상한 경계(xu)값을 임의로 정한다.
+2. 하한 경계 함수값 f(x1)과 상한 경계 함수값 f(xu)의 부호가 변하면 구간으로 확정한다.
+3. 구간이 확정되면, 이분법에 의한 값, xr = (x1 + xu)/2을 계산해서 근이라고 정한다.
+4. 하한 경계 함수값 f(x1)과 이분 경계 함수값 f(xr)의 부호 변화를 체크한다.
+    - 변하지 않으면 x1 = xr로 대체
+    - 변하면 xu = xr로 대체함
+5. 단계1 로 가서 반복한다.
+
+—# 증분법 : 해가 존재하는 구간을 찾아줌
+
+이분법 : 해를 찾아줌
+
+```python
+import numpy as np
+
+def bisect(func, xl, xu):
+    maxit=100
+    es=1.0e-4 #-- 절대 오치
+    test=func(xl)*func(xu)
+    #-- 두 구간의 함수값을 곱했을 때 양수면 구간이 존재 하지 않음
+
+    if test > 0:
+        print('No sign change')
+        return [], [], [], []
+
+    iter=0; xr=xl; ea=100
+
+    #-- 1단계 : 하한 경계(xl)과 상한 경계(xu)값을 임의로 정한다.
+    #-- 2단게 : 하한 경계 함수값 f(xl)과 상한 경계 함수값 f(xu)의 부호가 변하면 구간으로 확정한다.
+
+    while (1):
+        xrold=xr
+        xr=np.float64((xl+xu)/2)
+        #-- 3단계 : 구간이 확정되면, 이분법에 의한 값, xr = (xl +xu) /2을 계산해서 근이라고 정한다.
+        iter=iter+1
+
+        if xr != 0:  # 나누기에서 분모가 0이면 안 되죠. 0으로 나누는 것은 ZeroDivisionError: division by zero 가 발생하죠 
+            ea=np.float64(np.abs(np.float64(xr)-np.float64(xrold))/np.float64(xr))*100
+            #-- 상대 오차 계산
+
+        test=func(xl)*func(xr)
+        #-- 4단계 : 하한 경계 함수값 f(x1)과 이분 경계 함수값 f(xr)의 부호 변화를 체크한다.
+        
+        #-- 두 개의 구간을 곱해도 부호가 변하지 않으면 하한값을 조정 x1 = xr로 대체
+        if test > 0:
+            xl=xr
+        #-- 두 개의 구간을 곱해서 부호가 변하면 상한값을 조정 xu = xr로 대체함
+        elif test < 0:
+            xu=xr
+        else:
+            ea=0
+
+        if np.int64(ea<es) | np.int64(iter >= maxit):
+            break
+
+    root=xr
+    fx=func(xr)
+
+    return root, fx, ea, iter
+
+if __name__ == '__main__':
+    
+    fm=lambda m: np.sqrt(9.81*m/0.25)*np.tanh(np.sqrt(9.81*0.25/m)*4)-36
+    root, fx, ea, iter=bisect(fm, 40, 200)
+    print('root = ', root, '(Bisection)')
+    print('f(root) = ', fx, '(must be zero, Bisection)')
+    print('estimated error= ', ea, '(must be zero error, Bisection)')
+    print('iterated number to find root =', iter, '(Bisection)')
+```
