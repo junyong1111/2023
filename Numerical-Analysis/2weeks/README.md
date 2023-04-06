@@ -1,11 +1,5 @@
-## 2주차
+## 2주차(해석미분, 수치미분)
 
-- 강의자료(PDF)
-    
-    [ìì¹í´ì-2ì£¼ì°¨_ê°ì.pdf](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/68e3f327-3d7f-46f8-a326-79444c51773f/iiii-2ii_ei.pdf)
-    
-    [ìì¹í´ì_2ì£¼ì°¨_2ì°¨ì_ê°ì.pdf](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/0f45d2dd-16e9-4d34-ac2b-d6acd3f91aa6/iiii_2ii_2ii_ei.pdf)
-    
 
 | 해석미분 | 수치미분 |
 | --- | --- |
