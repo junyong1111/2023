@@ -1,4 +1,4 @@
-## 5주차
+## 5주차(Optimization, Tensorflow)
 
 - 일반해 : f(x) = 0
 - 최적해 : f’(x) = 0
