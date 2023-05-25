@@ -3,9 +3,6 @@
 
 ## 총정리
 
-<details>
-<summary> OOAD - 총정리 </summary>
-<div markdown="1">   
 
 
 <details>
@@ -683,8 +680,6 @@ Analysis & Design: 분석 및 설계는 시스템 아키텍처와 디자인을 �
 </details>
 
 
-</div>
-</details>
 
 <!-- 
 <details>
