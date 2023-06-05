@@ -1,9 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include
-from pybo import views
-
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api-auth/', include('rest_framework.urls')),
-    path('pybo/', include('pybo.urls')),
+	path('admin/', admin.site.urls),
+	path('fbvApp/', include('fbvApp.urls')),
+	# path('cbvApp/', include('cbvApp.urls')),
 ]
