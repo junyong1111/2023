@@ -43,6 +43,7 @@ PROJECT_APPS = [
 ]
 
 THIRD_PARTY_APPS =[
+        'snippets',
         'fbvApp',
         'cbvApp',
 		'rest_framework',
